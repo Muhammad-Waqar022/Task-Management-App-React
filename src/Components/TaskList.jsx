@@ -45,7 +45,7 @@ const TaskList = () => {
           {finalFilteredTasks.length > 0 ? (
             finalFilteredTasks.map((t) => <TaskItem key={t.id} tasks={t} />)
           ) : (
-            <p className="text-white text-center mt-15">{message}</p>
+            <p className="text-black dark:text-white text-center mt-15">{message}</p>
           )}
         </div>
       </div>
