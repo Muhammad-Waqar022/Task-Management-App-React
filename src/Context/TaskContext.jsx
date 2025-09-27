@@ -1,6 +1,5 @@
 import { createContext, useState,useEffect } from "react";
 
-
 export const TaskContext = createContext();
 
 export const TaskProvider = ({ children }) => {
@@ -9,7 +8,6 @@ export const TaskProvider = ({ children }) => {
   const [category, setCategory] = useState("");
   const [searchText, setSearchText] = useState("");
 
-   // ✅ Load tasks once on mount
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
     if (savedTasks) {
@@ -17,7 +15,6 @@ export const TaskProvider = ({ children }) => {
     }
   }, []);
 
-  // ✅ Save tasks whenever tasks change, but only if tasks exist
   useEffect(() => {
     if (tasks.length > 0) {
       localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -29,9 +26,10 @@ export const TaskProvider = ({ children }) => {
   };
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter((t) => t.id !== id));
-  };
-
+  const updatedTasks = tasks.filter((task) => task.id !== id);
+  setTasks(updatedTasks);
+  localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+};
   const updateTask = (updatedTask) => {
     setTasks(tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
     setEditingTask(null);

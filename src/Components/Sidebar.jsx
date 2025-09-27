@@ -16,7 +16,6 @@ const Sidebar = () => {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Logo */}
       <div className="flex gap-3 items-center mb-8">
         <div>
           <SquareCheckBig size={37} className="bg-blue-500 p-1 rounded-md" />
@@ -26,24 +25,30 @@ const Sidebar = () => {
           <p className="text-sm text-gray-400">Plan. Focus. Done.</p>
         </div>
       </div>
-
-      {/* Categories */}
       <div className="flex flex-col">
         <h2 className="text-sm font-semibold">Categories</h2>
         <div className="mt-4 flex flex-col gap-3">
-          <button onClick={() => setCategory("Today")} className={getButtonClass("Today")}>
+          <button
+            onClick={() => setCategory("Today")}
+            className={getButtonClass("Today")}
+          >
             <Calendar size={16} /> Today
           </button>
-          <button onClick={() => setCategory("Work")} className={getButtonClass("Work")}>
+          <button
+            onClick={() => setCategory("Work")}
+            className={getButtonClass("Work")}
+          >
             <Briefcase size={16} /> Work
           </button>
-          <button onClick={() => setCategory("Personal")} className={getButtonClass("Personal")}>
+          <button
+            onClick={() => setCategory("Personal")}
+            className={getButtonClass("Personal")}
+          >
             <User size={16} /> Personal
           </button>
         </div>
       </div>
 
-      {/* Summary */}
       <div className="mt-10">
         <h2 className="text-sm font-semibold">Summary</h2>
         <div className="mt-4">

@@ -7,25 +7,21 @@ const TaskList = () => {
   const { tasks, category, searchText } = useContext(TaskContext);
   const [filter, setFilter] = useState("all");
 
-  // 1️⃣ Filter by category
   const filteredByCategory = tasks.filter((task) => {
     if (category === "All" || category === "") return true;
     return task.category === category;
   });
 
-  // 2️⃣ Filter by completion status
   const filteredByStatus = filteredByCategory.filter((task) => {
     if (filter === "active") return !task.completed;
     if (filter === "completed") return task.completed;
     return true;
   });
 
-  // 3️⃣ Filter by search text
   const finalFilteredTasks = filteredByStatus.filter((task) =>
     task.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  // 4️⃣ Dynamic messages
   const getMessage = () => {
     if (tasks.length === 0) return "No tasks available. Please add a task.";
     if (filter === "active" && finalFilteredTasks.length === 0)
@@ -43,16 +39,16 @@ const TaskList = () => {
 
   return (
     <>
-    <div className="mt-8 ">
-      <Filters setFilter={setFilter} />
-      <div>
-        {finalFilteredTasks.length > 0 ? (
-          finalFilteredTasks.map((t) => <TaskItem key={t.id} tasks={t} />)
-        ) : (
-          <p className="text-white text-center mt-15">{message}</p>
-        )}
+      <div className="mt-8 ">
+        <Filters setFilter={setFilter} />
+        <div>
+          {finalFilteredTasks.length > 0 ? (
+            finalFilteredTasks.map((t) => <TaskItem key={t.id} tasks={t} />)
+          ) : (
+            <p className="text-white text-center mt-15">{message}</p>
+          )}
+        </div>
       </div>
-    </div>
     </>
   );
 };
