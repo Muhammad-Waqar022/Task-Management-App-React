@@ -1,41 +1,59 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import TaskItem from "./TaskItem";
+import { TaskContext } from "../Context/TaskContext";
+import Filters from "./Filters";
 
 const TaskList = () => {
-  const task = [
-    {
-      id: 1,
-      title: "Task 1",
-      priority: "High",
-      category: "Work",
-      dueDate: "2023-10-10",
-      completed: false,
-    },
-    {
-      id: 2,
-      title: "Task 2",
-      priority: "Medium",
-      category: "Personal",
-      dueDate: "2023-10-12",
-      completed: true,
-    },
-    {
-      id: 3,
-      title: "Task 3",
-      priority: "Low",
-      category: "Shopping",
-      dueDate: "2023-10-15",
-      completed: true,
-    },
-  ];
+  const { tasks, category, searchText } = useContext(TaskContext);
+  const [filter, setFilter] = useState("all");
+
+  // 1️⃣ Filter by category
+  const filteredByCategory = tasks.filter((task) => {
+    if (category === "All" || category === "") return true;
+    return task.category === category;
+  });
+
+  // 2️⃣ Filter by completion status
+  const filteredByStatus = filteredByCategory.filter((task) => {
+    if (filter === "active") return !task.completed;
+    if (filter === "completed") return task.completed;
+    return true;
+  });
+
+  // 3️⃣ Filter by search text
+  const finalFilteredTasks = filteredByStatus.filter((task) =>
+    task.title.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  // 4️⃣ Dynamic messages
+  const getMessage = () => {
+    if (tasks.length === 0) return "No tasks available. Please add a task.";
+    if (filter === "active" && finalFilteredTasks.length === 0)
+      return "No pending tasks! Great job!";
+    if (filter === "completed" && finalFilteredTasks.length === 0)
+      return "No completed tasks yet.";
+    if (category !== "All" && finalFilteredTasks.length === 0)
+      return `No tasks in "${category}" category.`;
+    if (searchText && finalFilteredTasks.length === 0)
+      return `No tasks matching "${searchText}".`;
+    return null;
+  };
+
+  const message = getMessage();
 
   return (
-    <div>
-      <h1 className="text-xl font-bold mb-4">Task List</h1>
-      {task.map((t) => (
-        <TaskItem key={t.id} task={t} />
-      ))}
+    <>
+    <div className="mt-8 ">
+      <Filters setFilter={setFilter} />
+      <div>
+        {finalFilteredTasks.length > 0 ? (
+          finalFilteredTasks.map((t) => <TaskItem key={t.id} tasks={t} />)
+        ) : (
+          <p className="text-white text-center mt-15">{message}</p>
+        )}
+      </div>
     </div>
+    </>
   );
 };
 
